@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./prueba.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="habilitador">
+            <label>Habilitar Busqueda: </label>
+            <input type="checkbox" id="" v-model="mostrar"  >
+        </div>
+         
+        <div v-if="!mostrar" class="añadir">
+            <label>Añadir Nota: </label>
+            <input placeholder="Escribe aqui tu nota" class="añadir__nota" type="text" v-model="message" v-on:keyup.enter="guardarInput">
+            
+            <select v-model="prioridad">
+                <option value="normal">normal</option>
+                <option value="baja">baja</option>
+                <option value="alta">alta</option>
+            </select>
+        </div>
+        <div class="buscar" v-else>
+            <label>Buscar: </label>
+            <input placeholder="Que desea buscar" class="buscar__nota" type="text" v-model="messageABuscar" >
+        </div>
+        
+        <p>Tienes apuntado {{numeroDeNotas()}} tareas | Pendientes {{numeroDeNotasPendientes()}} <button @click="eliminarTodas()" class="eliminarTodo">Eliminar todo</button></p>
+        <ul>
+            <li v-for="(objeto,pos) in busqueda" :key="objeto.fecha">
+                <input class="redondo" type="checkbox" v-model="objeto.finalizado" >
+                <p v-if="!objeto.finalizado">{{objeto.mensaje}}</p>
+                <p class="tachado" v-else>{{objeto.mensaje}}</p>
+                <select v-model="objeto.prioridad" >
+                    <option value="normal">normal</option>
+                    <option value="baja">baja</option>
+                    <option value="alta">alta</option>
+                </select>
+                <button class="eliminar" @click="eliminarTarea(pos)" >eliminar</button>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
